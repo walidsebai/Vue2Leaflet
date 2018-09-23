@@ -7,7 +7,9 @@
   "scripts": {
     "build": "cd scripts && ./build.sh",
     "size": "size-limit",
-    "lint": "eslint src --ext .js,.vue --ignore-path .gitignore"
+    "lint": "eslint src --ext .js,.vue --ignore-path .gitignore",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "main": "dist/vue2-leaflet.min.js",
   "module": "dist/vue2-leaflet.min.js",
@@ -54,6 +56,7 @@
     "vue-loader": "^14.2.3",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.5.17",
+    "vuepress": "^0.14.4",
     "webpack": "^4.19.1",
     "webpack-cli": "^2.1.5"
   }
