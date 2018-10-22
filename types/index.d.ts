@@ -3,7 +3,7 @@
 // Definitions by: Matthew Meehan <https://github.com/HIMISOCOOL>
 
 /**
- * TODO: 
+ * TODO:
  * create test cases for types
  * type parentContainer in components
  * type findRealParent
@@ -13,6 +13,7 @@
 declare module "vue2-leaflet" {
   import Vue from "vue";
   import { PropsDefinition } from "vue/types/options";
+  import * as L from 'leaflet';
   // borrowed from https://github.com/vuejs/vue-class-component
   type VueClass<V> = {
     new (...args: any[]): V & Vue;
@@ -103,14 +104,15 @@ declare module "vue2-leaflet" {
      */
     className: string;
     // methods
-    setOpacity(opacity: number): any;
-    setUrl(url: string): any;
-    setBounds(bounds: any): any;
-    getBounds(): any;
-    getElement(): any;
-    bringToFront(): void;
-    bringToBack(): void;
+    setOpacity(opacity: number): this;
+    bringToFront(): this;
+    bringToBack(): this;
+    setUrl(url: string): this;
+    setBounds(bounds: L.LatLngBounds): this;
+    getBounds(): L.LatLngBounds;
+    getElement(): HTMLImageElement | undefined;
   }
+
   class InteractiveLayer extends Vue {
     /**
      * @default true
@@ -152,9 +154,9 @@ declare module "vue2-leaflet" {
      */
     layerType: string | null;
     // methods
-    addLayer(layer: any, alreadyAdded?: boolean): void;
-    removeLayer(layer: any, alreadyRemoved?: boolean): void;
-    setLayerType(newVal: string | null, oldVal?: string | null): void;
+     addLayer(layer: L.Layer, alreadyAdded: boolean): void;
+     removeLayer(layer: L.Layer, alreadyRemoved: boolean): void;
+     setLayerType(newVal: string, oldVal?: string): void;
   }
   class Path extends Mixins(Layer, InteractiveLayer) {
     // props
@@ -229,7 +231,8 @@ declare module "vue2-leaflet" {
     setClassName(newVal: string | null, oldVal?: string | null): void;
   }
   class Polygon extends Mixins(PolyLine) {
-    getGeoJSONData(): any;
+    //should return geojson.Polygon | geojson.MultiPolygon
+    getGeoJSONData():any  ;
   }
   class PolyLine extends Mixins(Path) {
     // props
@@ -242,10 +245,10 @@ declare module "vue2-leaflet" {
      */
     noClip: boolean;
     // methods
-    setLStyle(newVal: object, oldVal?: object): void;
-    setSmoothFactor(newVal: number, oldVal?: number): void;
-    setNoClip(newVal: boolean, oldVal?: boolean): void;
-    addLatLng(value: any): void;
+    setLStyle(newVal:L.PathOptions,oldVal?:L.PathOptions):void;
+    setSmoothFactor(newVal:number,oldVal?:number):void
+    setNoClip(newVal:boolean,oldVal?:boolean):void;
+    addLating(latlng: L.LatLngExpression | L.LatLngExpression[]):void;
   }
   class Popper extends Vue {
     // props
@@ -370,9 +373,7 @@ declare module "vue2-leaflet" {
 
     // data
     mapObject: L.Control.Layers;
-
-    // methods
-    addLayer(layer: any): void;
+    addLayer(layer:any): void;
     removeLayer(layer: any): void;
   }
   class LControlScale extends Mixins(Control) {
@@ -450,7 +451,7 @@ declare module "vue2-leaflet" {
     // methods
     setGeojson(newVal: any): void;
     getGeoJSONData(): any;
-    getBounds(): any;
+    getBounds(): L.LatLngBounds;
     setOptions(newVal: any, oldVal?: any): void;
     setOptionsStyle(
       newVal: object | Function | null,
@@ -560,7 +561,7 @@ declare module "vue2-leaflet" {
 
     setPadding(newVal: any[], oldVal?: any[]): void;
 
-    fitBounds(bounds: any): void;
+    fitBounds(bounds: L.LatLngBoundsExpression): void;
 
     moveEndHandler(): void;
   }
